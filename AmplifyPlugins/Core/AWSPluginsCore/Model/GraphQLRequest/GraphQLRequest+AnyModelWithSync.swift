@@ -222,7 +222,7 @@ extension GraphQLRequest: ModelSyncGraphQLRequestFactory {
                                                                primaryKeysOnly: true)
         documentBuilder.add(decorator: DirectiveNameDecorator(type: .sync))
         if let predicate = optimizePredicate(predicate) {
-            documentBuilder.add(decorator: FilterDecorator(filter: predicate.graphQLFilter(for: modelSchema)))
+            documentBuilder.add(decorator: FilterDecorator(filter: predicate.graphQLFilter(for: modelSchema), queryType: .sync))
         }
         documentBuilder.add(decorator: PaginationDecorator(limit: limit, nextToken: nextToken))
         documentBuilder.add(decorator: ConflictResolutionDecorator(lastSync: lastSync, graphQLType: .query, primaryKeysOnly: true))

@@ -38,12 +38,12 @@ class GraphQLSyncQueryTests: XCTestCase {
 
         var documentBuilder = ModelBasedGraphQLDocumentBuilder(modelSchema: Post.schema, operationType: .query)
         documentBuilder.add(decorator: DirectiveNameDecorator(type: .sync))
-        documentBuilder.add(decorator: FilterDecorator(filter: predicate.graphQLFilter(for: Post.schema)))
+        documentBuilder.add(decorator: FilterDecorator(filter: predicate.graphQLFilter(for: Post.schema), queryType: .sync))
         documentBuilder.add(decorator: PaginationDecorator(limit: 100, nextToken: "token"))
         documentBuilder.add(decorator: ConflictResolutionDecorator(lastSync: 123, graphQLType: .query))
         let document = documentBuilder.build()
         let expectedQueryDocument = """
-        query SyncPosts($filter: ModelPostFilterInput, $lastSync: AWSTimestamp, $limit: Int, $nextToken: String) {
+        query SyncPosts($filter: ModelSyncPostFilterInput, $lastSync: AWSTimestamp, $limit: Int, $nextToken: String) {
           syncPosts(filter: $filter, lastSync: $lastSync, limit: $limit, nextToken: $nextToken) {
             items {
               id
